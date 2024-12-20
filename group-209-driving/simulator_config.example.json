@@ -1,0 +1,121 @@
+{
+  "inputs": {
+    "#inputs_description": "The sensors connected to your robot and which port they are connect to. If you dont use a sensor specified here, please delete it. The order is ignored, only the inputs (in1, in2, in3, in4) matter.",
+    "in1": {
+      "type": "lego-sensor/lego-ev3-us",
+      "#type_description": "The name of the driver used for this ultrasonic-sensor. See the other sensors for valid values",
+      "location": {
+        "forward_cm": 3.5,
+        "left_cm": 0,
+        "rotation_deg": 0
+      },
+      "#location_description": "The location of the sensor, relative to the COW (CenterOfWheels = HalfwayPoint between the wheels)"
+    },
+    "in2": {
+      "type": "lego-sensor/lego-ev3-color",
+      "#type_description": "The name of the driver used for this color-sensor. See the other sensors for valid values",
+      "location": {
+        "forward_cm": 5.4,
+        "left_cm": 0,
+        "rotation_deg": 0
+      },
+      "#colors_description": "The values the color-sensor should return when over the specified color. Red, green and blue are required, ambient and reflect only if you use them.",
+      "#colors_warning": "!!!DO NOT OMIT THESE EVEN IF YOUR ROBOT AUTO-CALIBRATES!!!",
+      "colors": {
+        "red": {
+          "red": 165,
+          "green": 25,
+          "blue": 12
+        },
+        "blue": {
+          "red": 40,
+          "green": 113,
+          "blue": 67
+        },
+        "white": {
+          "red": 250,
+          "green": 250,
+          "blue": 80,
+          "ambient": 200,
+          "reflect": 200
+        },
+        "black": {
+          "red": 30,
+          "green": 45,
+          "blue": 11,
+          "ambient": 10,
+          "reflect": 10
+        }
+      },
+      "test_circle_diameter_cm": 0.5,
+      "#test_circle_diameter_cm_description": "The diameter of the circle the color-sensor projects onto the floor, in cm. Related to how high you mount your color-sensor."
+    },
+    "in3": {
+      "type": "lego-sensor/lego-ev3-touch",
+      "#type_description": "The name of the driver used for this touch-sensor. See the other sensors for valid values",
+      "location": {
+        "forward_cm": 6,
+        "left_cm": 0,
+        "rotation_deg": 0
+      },
+      "#location_description": "The center of the test-area for your touch-sensor. The touch-sensor is modelled as a circle which is pressed when something enters it. The location specifies the center of this circle",
+      "hittest_diameter_cm": 5,
+      "#hittest_diameter_cm_description": "The diameter of the test-area mentioned earlier (#location_description). If you use a horizontal bar then this is the length of that bar"
+    },
+    "in4": {
+      "type": "lego-sensor/lego-ev3-gyro",
+      "#type_description": "The name of the driver used for this gyro-sensor. See the other sensors for valid values",
+      "location": {
+        "forward_cm": 0,
+        "left_cm": 0,
+        "rotation_deg": 0
+      },
+      "#location_note": "Ignored for gyro-sensor, but still required (values may be any numbers)",
+      "inverted": true,
+      "#inverted_description": "Whether your sensor is mounted upside-down (turn-arrows are on the bottom). Can be deleted if false."
+    }
+  },
+  "wheels": {
+    "#wheels_description": "Information related to the position of wheels and motors. The simulator NEEDS these values even if you dont use odometry!",
+    "wheeldistance_cm": 14,
+    "#wheeldistance_cm_description": "The distance from wheel to wheel, in cm",
+    "distance_per_tick_cm": 0.02618,
+    "#distance_per_tick_cm_description": "The distance one wheel travels forward when the motors turns by 1°, in cm. This also includes gear-trains if present! If your robot moves backwards when turning the motors positively, multiply this by -1",
+    "#distance_per_tick_cm_example_3cm_wheeldiameter": 0.02618,
+    "#distance_per_tick_cm_example_56mm_wheeldiameter": 0.04887,
+    "left": {
+      "type": "tacho-motor",
+      "#type_description": "The internal driver-name used for the motor - DO NOT change unless you know what you're doing!",
+      "port": "outB",
+      "#port_description": "The port this motor is connected to (outA, outB, outC, outD)",
+      "polarity_inverted": false,
+      "#polarity_inverted_description": "If your program uses motors with inverted polarity (most dont), set this to true"
+    },
+    "right": {
+      "#description": "see left",
+      "type": "tacho-motor",
+      "port": "outD",
+      "polarity_inverted": false
+    }
+  },
+  "weight_kg": 0.5,
+  "#weight_kg_description": "A rough estimate, might be used in the future to improve acceleration simulation. Currently not used.",
+  "startup_sequence": [
+    "MOVEOVER: RED  #Moves the color-sensor over a red node",
+    "SLEEP: 5  #Waits 5 seconds",
+    "MOVEOVER: BLUE  #Moves the color-sensor over a blue node",
+    "PUSH: ENTER  #Pushes the 'ENTER' button on the robot down",
+    "SLEEP: 1",
+    "RELEASE: ENTER  #Releases the 'ENTER' button on the robot",
+    "MOVEOVER: WHITE  #Moves the color-sensor over the planet-background",
+    "PUSH: in3  #Pushes the touch-sensor connected to port 'in3'",
+    "SLEEP: 1",
+    "RELEASE: in3 #Releases the touch-sensor connected to port 'in3'",
+    "MOVEOVER: BLACK  #Moves the color-sensor over the center of the start-line",
+    "INPUT: black #Enters the text 'black' into the console and presses enter. For use with the python input(). Can also be used without text.",
+    "SLEEP: 2.5",
+    "MOVEOVER: EDGE_LEFT  #Moves the color-sensor over the left edge of the start-line. Also accepts: EDGE_RIGHT",
+    "INPUT: #presses enter in the console. For use with the python input(). Can also be used with text."
+  ],
+  "#startup_sequence_description": "Any commands the simulator should execute before beginning the simulation. Not required, but makes it easier for us to simulate your robot if you use calibration. Please delete or set to [] if not used. Everything after a '#' and trailing whitespaces are ignored"
+}
